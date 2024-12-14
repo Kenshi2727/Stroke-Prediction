@@ -15,7 +15,7 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 st.write("Stroke Prediction")
 st.write("A stroke occurs when blood flow to the brain is interrupted or reduced, depriving brain cells of oxygen and nutrients. This can lead to severe health complications, disability, or even death if not treated promptly.")
 
-image_path = os.path.join(working_dir, 'Stroke.webp')
+# image_path = os.path.join(working_dir, 'Stroke.webp')
 st.image(image_path)
 
 st.write("Please enter the following data")
