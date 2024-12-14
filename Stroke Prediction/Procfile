@@ -1,2 +1,2 @@
-web: sh setup.sh && streamlit run "Stroke Prediction/Web App/stroke_prediction_web_app.py"
+web: sh setup.sh && streamlit run "Stroke Prediction/stroke_prediction_web_app.py"
 
