@@ -71,8 +71,8 @@ smoking_status_mapping = {
 }
 
 # Build paths relative to the working directory
-scaler_path = os.path.join(working_dir, '../scaler.pkl')
-model_path = os.path.join(working_dir, '../dtc_balanced.pkl')
+scaler_path = os.path.join(working_dir, 'scaler.pkl')
+model_path = os.path.join(working_dir, 'dtc_balanced.pkl')
 
 
 mapped_smoking_status = smoking_status_mapping[smoking_status]
