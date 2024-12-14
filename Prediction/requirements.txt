@@ -1,0 +1,9 @@
+pip>=23.0.0
+setuptools>=65.0.0
+numpy==1.26.4
+pandas==2.2.3
+seaborn==0.13.2
+scikit-learn==1.5.1
+matplotlib==3.9.3
+imbalanced-learn==0.12.4
+streamlit==1.39.0
