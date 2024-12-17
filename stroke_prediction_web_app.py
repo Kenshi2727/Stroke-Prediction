@@ -52,65 +52,67 @@ glucose_level = st.number_input("Average Glucose Level", min_value=0.1, format="
 bmi = st.number_input("Body Mass Index (BMI)", min_value=0.1, format="%.2f")
 smoking_status = st.selectbox("Smoking Status", ["Yes", "No", "Occasionally"])
 
-# Map smoking status
-smoking_status_mapping = {
-    "Yes": "smokes",
-    "No": "never smoked",
-    "Occasionally": "formerly smoked"
-}
-mapped_smoking_status = smoking_status_mapping[smoking_status]
-
-# Load scaler and model
-scaler_path = os.path.join(working_dir, 'scaler.pkl')
-model_path = os.path.join(working_dir, 'dtc_balanced.pkl')
-with open(scaler_path, "rb") as scaler_file:
-    scaler = pickle.load(scaler_file)
-with open(model_path, "rb") as model_file:
-    model = pickle.load(model_file)
-
-# Preprocess input
-scaled_age = scaler.fit_transform([[age]])[0][0]
-glucose_level = np.log(glucose_level) if glucose_level > 0 else 0
-bmi = np.log(bmi) if bmi > 0 else 0
-
-input_data = {
-    'gender': gender, 'age': scaled_age, 'hypertension': hypertension, 'heart_disease': heart_disease,
-    'ever_married': ever_married, 'work_type': work_type, 'Residence_type': residence_type,
-    'avg_glucose_level': glucose_level, 'bmi': bmi, 'smoking_status': mapped_smoking_status
+# Radar Chart Data Preparation
+chart_data = {
+    "labels": ["Age", "Hypertension", "Heart Disease", "BMI", "Glucose Level"],
+    "values": [age, 1 if hypertension == "Yes" else 0, 1 if heart_disease == "Yes" else 0, bmi, glucose_level]
 }
 
-# Encode categorical features
-encode = ['gender', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
-le = LabelEncoder()
-for feature in encode:
-    input_data[feature] = le.fit_transform([input_data[feature]])[0]
-
-# Convert to DataFrame
-input_df = pd.DataFrame([input_data])
-
-# Prediction
-prediction = model.predict(input_df)
-
-# Result
+# Radar Chart using Chart.js
 st.markdown("---")
-st.subheader("🧾 Prediction Result")
-if prediction == 1:
-    st.error("⚠️ You are at risk of having a stroke. Please consult a healthcare provider.")
-else:
-    st.success("✅ You are not at risk of having a stroke. Keep maintaining a healthy lifestyle!")
+st.subheader("📊 Health Indicator Analysis")
 
-# Stroke Prevention Guidelines
-with st.expander("💡 **Stroke Prevention Guidelines**", expanded=False):
-    st.markdown("""
-    1. **Blood Pressure**: Monitor and manage your blood pressure regularly.
-    2. **Physical Activity**: Exercise at least 30 minutes a day, 4 times a week.
-    3. **Healthy Diet**: Eat a balanced diet rich in fruits and vegetables.
-    4. **Weight Management**: Maintain a healthy BMI.
-    5. **Smoking Cessation**: Avoid smoking and secondhand smoke.
-    6. **Alcohol Consumption**: Limit alcohol intake.
-    7. **Manage Conditions**: Treat diabetes, heart disease, and cholesterol levels effectively.
-    8. **Medical Therapy**: Take prescribed medications consistently.
-    """)
+st.components.v1.html(f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="width: 100%; max-width: 600px; margin: auto;">
+        <canvas id="radarChart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctx, {{
+            type: 'radar',
+            data: {{
+                labels: {chart_data["labels"]},
+                datasets: [{{
+                    label: 'Health Indicators',
+                    data: {chart_data["values"]},
+                    fill: true,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                }}]
+            }},
+            options: {{
+                responsive: true,
+                plugins: {{
+                    legend: {{
+                        display: true,
+                        position: 'top'
+                    }}
+                }},
+                scales: {{
+                    r: {{
+                        angleLines: {{
+                            display: true
+                        }},
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }}
+                }}
+            }}
+        }});
+    </script>
+</body>
+</html>
+""", height=500)
 
 # Footer
 st.markdown("---")
