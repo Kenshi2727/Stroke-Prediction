@@ -1,12 +1,5 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import pickle
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 import os
-
-# Get working directory
-working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Page Configurations
 st.set_page_config(
@@ -15,53 +8,32 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom Styles
-st.markdown("""
-    <style>
-        .title { text-align: center; font-size: 40px; color: #FF4B4B; }
-        .subheader { text-align: center; font-size: 20px; color: #333333; }
-        .footer { text-align: center; font-size: 16px; color: gray; margin-top: 20px; }
-        .section-header { font-size: 18px; color: #007BFF; margin-top: 20px; }
-    </style>
-""", unsafe_allow_html=True)
+# Title
+st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🧠 Stroke Prediction App</h1>", unsafe_allow_html=True)
+st.write("This tool predicts stroke risk and visualizes your health indicators.")
 
-# Title and Intro
-st.markdown("<p class='title'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
-st.markdown("<p class='subheader'>A tool to predict stroke risk based on health indicators.</p>", unsafe_allow_html=True)
+# Inputs for the Radar Chart
+st.sidebar.header("Input Your Health Indicators")
+age = st.sidebar.number_input("Age", min_value=1, step=1, value=25)
+hypertension = st.sidebar.radio("Hypertension", ["Yes", "No"])
+heart_disease = st.sidebar.radio("Heart Disease", ["Yes", "No"])
+bmi = st.sidebar.number_input("BMI", min_value=10.0, max_value=50.0, step=0.1, value=23.5)
+glucose_level = st.sidebar.number_input("Glucose Level", min_value=50.0, max_value=300.0, step=1.0, value=100.0)
 
-st.image(os.path.join(working_dir, 'Stroke.webp'), use_column_width=True)
-
-st.write("Please provide the following details to predict your stroke risk:")
-
-# Input Section
-st.markdown("<p class='section-header'>📝 Personal Information</p>", unsafe_allow_html=True)
-gender = st.radio("Gender", ["Male", "Female"])
-age = st.number_input("Age", min_value=1, step=1)
-
-st.markdown("<p class='section-header'>❤️ Health Details</p>", unsafe_allow_html=True)
-hypertension = st.radio("Do you suffer from Hypertension?", ["Yes", "No"])
-heart_disease = st.radio("Do you suffer from Heart Disease?", ["Yes", "No"])
-
-st.markdown("<p class='section-header'>🏠 Lifestyle Details</p>", unsafe_allow_html=True)
-ever_married = st.radio("Marital Status", ["Yes", "No"])
-work_type = st.selectbox("Work Type", ["Children", "Private", "Never_worked", "Self-employed", "Govt_job"])
-residence_type = st.radio("Residence Type", ["Rural", "Urban"])
-
-st.markdown("<p class='section-header'>🧪 Health Metrics</p>", unsafe_allow_html=True)
-glucose_level = st.number_input("Average Glucose Level", min_value=0.1, format="%.2f")
-bmi = st.number_input("Body Mass Index (BMI)", min_value=0.1, format="%.2f")
-smoking_status = st.selectbox("Smoking Status", ["Yes", "No", "Occasionally"])
-
-# Radar Chart Data Preparation
+# Map Inputs for Chart Data
 chart_data = {
     "labels": ["Age", "Hypertension", "Heart Disease", "BMI", "Glucose Level"],
-    "values": [age, 1 if hypertension == "Yes" else 0, 1 if heart_disease == "Yes" else 0, bmi, glucose_level]
+    "values": [
+        age,
+        1 if hypertension == "Yes" else 0,
+        1 if heart_disease == "Yes" else 0,
+        bmi,
+        glucose_level
+    ]
 }
 
-# Radar Chart using Chart.js
-st.markdown("---")
-st.subheader("📊 Health Indicator Analysis")
-
+# Embed the Radar Chart using Chart.js
+st.subheader("📊 Health Indicator Radar Chart")
 st.components.v1.html(f"""
 <!DOCTYPE html>
 <html>
@@ -70,10 +42,10 @@ st.components.v1.html(f"""
 </head>
 <body>
     <div style="width: 100%; max-width: 600px; margin: auto;">
-        <canvas id="radarChart"></canvas>
+        <canvas id="myRadarChart"></canvas>
     </div>
     <script>
-        const ctx = document.getElementById('radarChart').getContext('2d');
+        var ctx = document.getElementById('myRadarChart').getContext('2d');
         new Chart(ctx, {{
             type: 'radar',
             data: {{
@@ -81,7 +53,6 @@ st.components.v1.html(f"""
                 datasets: [{{
                     label: 'Health Indicators',
                     data: {chart_data["values"]},
-                    fill: true,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     pointBackgroundColor: 'rgba(54, 162, 235, 1)',
@@ -92,19 +63,20 @@ st.components.v1.html(f"""
             }},
             options: {{
                 responsive: true,
-                plugins: {{
-                    legend: {{
-                        display: true,
-                        position: 'top'
-                    }}
-                }},
                 scales: {{
                     r: {{
-                        angleLines: {{
-                            display: true
-                        }},
                         suggestedMin: 0,
-                        suggestedMax: 100
+                        suggestedMax: 150,
+                        pointLabels: {{
+                            font: {{
+                                size: 14
+                            }}
+                        }}
+                    }}
+                }},
+                plugins: {{
+                    legend: {{
+                        position: 'top',
                     }}
                 }}
             }}
@@ -113,12 +85,3 @@ st.components.v1.html(f"""
 </body>
 </html>
 """, height=500)
-
-# Footer
-st.markdown("---")
-st.markdown("""
-<p class='footer'>
-    Developed with ❤️ by <b>Ashutosh Tiwari</b>  
-    [LinkedIn](https://www.linkedin.com/in/ashutosh-tiwari-84a09127b/) | [GitHub](https://github.com/AshutoshTiwari0)
-</p>
-""", unsafe_allow_html=True)
