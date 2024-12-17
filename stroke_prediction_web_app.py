@@ -12,7 +12,7 @@ st.set_page_config(
 st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🧠 Stroke Prediction App</h1>", unsafe_allow_html=True)
 st.write("This tool predicts stroke risk and visualizes your health indicators.")
 
-# Inputs for the Radar Chart
+# Inputs for the Bar Chart
 st.sidebar.header("Input Your Health Indicators")
 age = st.sidebar.number_input("Age", min_value=1, step=1, value=25)
 hypertension = st.sidebar.radio("Hypertension", ["Yes", "No"])
@@ -32,8 +32,8 @@ chart_data = {
     ]
 }
 
-# Embed the Radar Chart using Chart.js
-st.subheader("📊 Health Indicator Radar Chart")
+# Embed the Bar Chart using Chart.js
+st.subheader("📊 Health Indicator Bar Chart")
 st.components.v1.html(f"""
 <!DOCTYPE html>
 <html>
@@ -42,41 +42,31 @@ st.components.v1.html(f"""
 </head>
 <body>
     <div style="width: 100%; max-width: 600px; margin: auto;">
-        <canvas id="myRadarChart"></canvas>
+        <canvas id="myBarChart"></canvas>
     </div>
     <script>
-        var ctx = document.getElementById('myRadarChart').getContext('2d');
+        var ctx = document.getElementById('myBarChart').getContext('2d');
         new Chart(ctx, {{
-            type: 'radar',
+            type: 'bar',
             data: {{
                 labels: {chart_data["labels"]},
                 datasets: [{{
                     label: 'Health Indicators',
                     data: {chart_data["values"]},
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 
+                                      'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 
+                                      'rgba(153, 102, 255, 0.6)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 
+                                  'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 
+                                  'rgba(153, 102, 255, 1)'],
+                    borderWidth: 1
                 }}]
             }},
             options: {{
                 responsive: true,
                 scales: {{
-                    r: {{
-                        suggestedMin: 0,
-                        suggestedMax: 150,
-                        pointLabels: {{
-                            font: {{
-                                size: 14
-                            }}
-                        }}
-                    }}
-                }},
-                plugins: {{
-                    legend: {{
-                        position: 'top',
+                    y: {{
+                        beginAtZero: true
                     }}
                 }}
             }}
