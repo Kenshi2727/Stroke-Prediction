@@ -15,49 +15,13 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom Styles for Dynamic Background and Elements
+# Custom Styles
 st.markdown("""
     <style>
-        /* Dynamic Gradient Background */
-        body {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #ffdde1);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Title and Subheader Styling */
-        .title { text-align: center; font-size: 45px; color: #FFFFFF; text-shadow: 2px 2px 4px #333; }
-        .subheader { text-align: center; font-size: 20px; color: #222222; }
-
-        /* Stylish Radio Buttons */
-        div.stRadio > div { 
-            display: flex; justify-content: center; 
-            gap: 10px; 
-        }
-        div.stRadio label span { 
-            color: #222; 
-            font-weight: bold; 
-        }
-
-        /* Section Headers */
-        .section-header { font-size: 20px; color: #FF6B6B; margin-top: 20px; text-shadow: 1px 1px 2px #ccc; }
-
-        /* Cards with Shadows */
-        .card { 
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
-
-        /* Footer Styling */
-        .footer { text-align: center; font-size: 16px; color: #444; margin-top: 20px; }
+        .title { text-align: center; font-size: 40px; color: #FF4B4B; }
+        .subheader { text-align: center; font-size: 20px; color: #333333; }
+        .footer { text-align: center; font-size: 16px; color: gray; margin-top: 20px; }
+        .section-header { font-size: 18px; color: #007BFF; margin-top: 20px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -65,8 +29,9 @@ st.markdown("""
 st.markdown("<p class='title'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
 st.markdown("<p class='subheader'>A tool to predict stroke risk based on health indicators.</p>", unsafe_allow_html=True)
 
-# Input Form in a Card
-st.markdown("<div class='card'>", unsafe_allow_html=True)
+st.image(os.path.join(working_dir, 'Stroke.webp'), use_column_width=True)
+
+st.write("Please provide the following details to predict your stroke risk:")
 
 # Input Section
 st.markdown("<p class='section-header'>📝 Personal Information</p>", unsafe_allow_html=True)
@@ -86,8 +51,6 @@ st.markdown("<p class='section-header'>🧪 Health Metrics</p>", unsafe_allow_ht
 glucose_level = st.number_input("Average Glucose Level", min_value=0.1, format="%.2f")
 bmi = st.number_input("Body Mass Index (BMI)", min_value=0.1, format="%.2f")
 smoking_status = st.selectbox("Smoking Status", ["Yes", "No", "Occasionally"])
-
-st.markdown("</div>", unsafe_allow_html=True)  # Close Card Div
 
 # Map smoking status
 smoking_status_mapping = {
@@ -128,14 +91,13 @@ input_df = pd.DataFrame([input_data])
 # Prediction
 prediction = model.predict(input_df)
 
-# Result with Shadow Card
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<p class='section-header'>🧾 Prediction Result</p>", unsafe_allow_html=True)
+# Result
+st.markdown("---")
+st.subheader("🧾 Prediction Result")
 if prediction == 1:
     st.error("⚠️ You are at risk of having a stroke. Please consult a healthcare provider.")
 else:
     st.success("✅ You are not at risk of having a stroke. Keep maintaining a healthy lifestyle!")
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Stroke Prevention Guidelines
 with st.expander("💡 **Stroke Prevention Guidelines**", expanded=False):
@@ -151,4 +113,10 @@ with st.expander("💡 **Stroke Prevention Guidelines**", expanded=False):
     """)
 
 # Footer
-st.markdown("<p class='footer'>Developed with ❤️ by <b>Ashutosh Tiwari</b></p>", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown("""
+<p class='footer'>
+    Developed with ❤️ by <b>Ashutosh Tiwari</b>  
+    [LinkedIn](https://www.linkedin.com/in/ashutosh-tiwari-84a09127b/) | [GitHub](https://github.com/AshutoshTiwari0)
+</p>
+""", unsafe_allow_html=True)
