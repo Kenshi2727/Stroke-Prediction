@@ -12,7 +12,7 @@ st.set_page_config(
 st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🧠 Stroke Prediction App</h1>", unsafe_allow_html=True)
 st.write("This tool predicts stroke risk and visualizes your health indicators.")
 
-# Inputs for the Line Chart
+# Inputs for the Polar Chart
 st.sidebar.header("Input Your Health Indicators")
 age = st.sidebar.number_input("Age", min_value=1, step=1, value=25)
 hypertension = st.sidebar.radio("Hypertension", ["Yes", "No"])
@@ -32,8 +32,8 @@ chart_data = {
     ]
 }
 
-# Embed the Line Chart using Chart.js
-st.subheader("📈 Health Indicator Line Chart")
+# Embed the Polar Chart using Chart.js
+st.subheader("📊 Health Indicator Polar Chart")
 st.components.v1.html(f"""
 <!DOCTYPE html>
 <html>
@@ -42,28 +42,26 @@ st.components.v1.html(f"""
 </head>
 <body>
     <div style="width: 100%; max-width: 600px; margin: auto;">
-        <canvas id="myLineChart"></canvas>
+        <canvas id="myPolarChart"></canvas>
     </div>
     <script>
-        var ctx = document.getElementById('myLineChart').getContext('2d');
+        var ctx = document.getElementById('myPolarChart').getContext('2d');
         new Chart(ctx, {{
-            type: 'line',
+            type: 'polarArea',
             data: {{
                 labels: {chart_data["labels"]},
                 datasets: [{{
                     label: 'Health Indicators',
                     data: {chart_data["values"]},
-                    borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    pointBackgroundColor: 'rgba(255, 99, 132, 1)'
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2
                 }}]
             }},
             options: {{
                 responsive: true,
                 scales: {{
-                    y: {{
+                    r: {{
                         beginAtZero: true
                     }}
                 }}
