@@ -18,12 +18,46 @@ st.set_page_config(
 # Custom Styles
 st.markdown("""
     <style>
-        .title { text-align: center; font-size: 40px; color: #FF4B4B; }
-        .subheader { text-align: center; font-size: 20px; color: #333333; }
-        .footer { text-align: center; font-size: 16px; color: gray; margin-top: 20px; }
-        .section-header { font-size: 18px; color: #007BFF; margin-top: 20px; }
+        /* Background Styling */
+        body {
+            background: linear-gradient(to bottom right, #FFDEE9, #B5FFFC);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Title Styling */
+        .title { 
+            text-align: center; 
+            font-size: 40px; 
+            color: #FF4B4B; 
+            text-shadow: 2px 2px 4px #00000040; 
+        }
+        
+        /* Subheader Styling */
+        .subheader { 
+            text-align: center; 
+            font-size: 20px; 
+            color: #333333; 
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 18px; 
+            color: #007BFF; 
+            margin-top: 20px;
+        }
+
+        /* Footer Styling */
+        .footer { 
+            text-align: center; 
+            font-size: 16px; 
+            color: gray; 
+            margin-top: 20px;
+        }
     </style>
 """, unsafe_allow_html=True)
+
 
 # Title and Intro
 st.markdown("<p class='title'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
