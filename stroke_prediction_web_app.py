@@ -12,7 +12,7 @@ st.set_page_config(
 st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🧠 Stroke Prediction App</h1>", unsafe_allow_html=True)
 st.write("This tool predicts stroke risk and visualizes your health indicators.")
 
-# Inputs for the Bar Chart
+# Inputs for the Line Chart
 st.sidebar.header("Input Your Health Indicators")
 age = st.sidebar.number_input("Age", min_value=1, step=1, value=25)
 hypertension = st.sidebar.radio("Hypertension", ["Yes", "No"])
@@ -32,8 +32,8 @@ chart_data = {
     ]
 }
 
-# Embed the Bar Chart using Chart.js
-st.subheader("📊 Health Indicator Bar Chart")
+# Embed the Line Chart using Chart.js
+st.subheader("📈 Health Indicator Line Chart")
 st.components.v1.html(f"""
 <!DOCTYPE html>
 <html>
@@ -42,24 +42,22 @@ st.components.v1.html(f"""
 </head>
 <body>
     <div style="width: 100%; max-width: 600px; margin: auto;">
-        <canvas id="myBarChart"></canvas>
+        <canvas id="myLineChart"></canvas>
     </div>
     <script>
-        var ctx = document.getElementById('myBarChart').getContext('2d');
+        var ctx = document.getElementById('myLineChart').getContext('2d');
         new Chart(ctx, {{
-            type: 'bar',
+            type: 'line',
             data: {{
                 labels: {chart_data["labels"]},
                 datasets: [{{
                     label: 'Health Indicators',
                     data: {chart_data["values"]},
-                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 
-                                      'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 
-                                      'rgba(153, 102, 255, 0.6)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 
-                                  'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 
-                                  'rgba(153, 102, 255, 1)'],
-                    borderWidth: 1
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgba(255, 99, 132, 1)'
                 }}]
             }},
             options: {{
