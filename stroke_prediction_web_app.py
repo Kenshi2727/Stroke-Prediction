@@ -18,19 +18,12 @@ st.set_page_config(
 # Custom Styles
 st.markdown("""
     <style>
-        body {
-            background-image: url("https://www.tmmagazine.co.uk/images/view/43d4abb790c4b93344715059cb0c7c4c.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-        }
+        .title { text-align: center; font-size: 40px; color: #FF4B4B; }
+        .subheader { text-align: center; font-size: 20px; color: #333333; }
+        .footer { text-align: center; font-size: 16px; color: gray; margin-top: 20px; }
+        .section-header { font-size: 18px; color: #007BFF; margin-top: 20px; }
     </style>
 """, unsafe_allow_html=True)
-
-
 
 # Title and Intro
 st.markdown("<p class='title'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
